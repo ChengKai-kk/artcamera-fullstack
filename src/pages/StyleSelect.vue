@@ -112,7 +112,10 @@ async function load() {
   errorMsg.value = "";
 
   try {
-    const res = await fetch("/config/styles.json", { cache: "no-store" });
+    // ✅ 关键：用 BASE_URL 适配 GitHub Pages 子路径部署（/artcamera-web/）
+    const url = `${import.meta.env.BASE_URL}config/styles.json`;
+    const res = await fetch(url, { cache: "no-store" });
+
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
 
