@@ -267,8 +267,9 @@ onBeforeUnmount(() => {
 }
 
 .result-image {
-  max-width: min(820px, 90vw);
-  max-height: 60vh;
+  width: min(860px, 90vw);
+  max-height: 62vh;
+  object-fit: contain;
   border-radius: 18px;
   border: 1px solid rgba(120, 200, 255, 0.3);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);

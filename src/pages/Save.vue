@@ -30,7 +30,6 @@
       </div>
 
       <div class="actions">
-        <button class="btn btn-ghost" @click="copyLink">复制链接</button>
         <button class="btn btn-ghost" @click="goGenerate">返回生成页</button>
         <button class="btn btn-primary" @click="goHome">返回首页</button>
       </div>
@@ -50,11 +49,14 @@ const qrDataUrl = ref("");
 
 // ====== 无操作自动回首页 ======
 const IDLE_MS = 60 * 1000; // 60 秒
-const idleSeconds = Math.floor(IDLE_MS / 1000);
-
+const idleSeconds = ref(Math.floor(IDLE_MS / 1000));
 let idleTimer = null;
+let countdownTimer = null;
+let lastActiveAt = Date.now();
 
 function resetIdle() {
+  lastActiveAt = Date.now();
+  idleSeconds.value = Math.ceil(IDLE_MS / 1000);
   if (idleTimer) clearTimeout(idleTimer);
   idleTimer = setTimeout(() => {
     router.replace("/"); // 超时直接回首页，不堆栈历史
@@ -68,11 +70,18 @@ function bindIdleEvents() {
 
   // 初始化一次
   resetIdle();
+  countdownTimer = setInterval(() => {
+    const elapsed = Date.now() - lastActiveAt;
+    const left = Math.max(0, Math.ceil((IDLE_MS - elapsed) / 1000));
+    idleSeconds.value = left;
+  }, 1000);
 
   return () => {
     events.forEach((ev) => window.removeEventListener(ev, resetIdle));
     if (idleTimer) clearTimeout(idleTimer);
     idleTimer = null;
+    if (countdownTimer) clearInterval(countdownTimer);
+    countdownTimer = null;
   };
 }
 
@@ -92,15 +101,6 @@ function goGenerate() {
 
 function goHome() {
   router.push("/");
-}
-
-async function copyLink() {
-  try {
-    await navigator.clipboard.writeText(resultUrl.value);
-    alert("链接已复制");
-  } catch (e) {
-    alert("复制失败：浏览器可能未授权剪贴板权限");
-  }
 }
 
 onMounted(async () => {
@@ -192,7 +192,8 @@ onBeforeUnmount(() => {
 
 .result-img {
   max-width: 100%;
-  max-height: 55vh;
+  max-height: 58vh;
+  object-fit: contain;
   border-radius: 18px;
   border: 1px solid rgba(120, 200, 255, 0.28);
   box-shadow: 0 18px 36px rgba(0, 0, 0, 0.4);
