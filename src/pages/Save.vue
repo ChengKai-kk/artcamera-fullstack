@@ -1,12 +1,16 @@
 <template>
-  <div class="app-page">
-    <h1>扫码保存</h1>
+  <div class="app-page save-page">
+    <header class="page-head">
+      <div class="eyebrow">Art Camera</div>
+      <h1 class="page-title">扫码保存</h1>
+      <div class="page-subtitle">请使用手机扫码保存作品</div>
+    </header>
 
     <div v-if="!resultUrl" class="empty">
       <p>没有找到生成结果，请先生成图片。</p>
       <div class="actions">
-        <button class="btn" @click="goGenerate">去生成</button>
-        <button class="btn ghost" @click="goHome">返回首页</button>
+        <button class="btn btn-primary" @click="goGenerate">去生成</button>
+        <button class="btn btn-ghost" @click="goHome">返回首页</button>
       </div>
     </div>
 
@@ -26,9 +30,9 @@
       </div>
 
       <div class="actions">
-        <button class="btn ghost" @click="copyLink">复制链接</button>
-        <button class="btn ghost" @click="goGenerate">返回生成页</button>
-        <button class="btn" @click="goHome">返回首页</button>
+        <button class="btn btn-ghost" @click="copyLink">复制链接</button>
+        <button class="btn btn-ghost" @click="goGenerate">返回生成页</button>
+        <button class="btn btn-primary" @click="goHome">返回首页</button>
       </div>
     </div>
   </div>
@@ -119,23 +123,23 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .save-page {
-  min-height: 100vh;
-  background: #0f0f0f;
-  color: #fff;
-  padding: 24px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
   align-items: center;
+  color: var(--text);
 }
 
-h1 {
-  margin: 0 0 16px;
-  font-size: 28px;
+.page-head {
+  text-align: center;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-size: clamp(12px, 1.4vh, 16px);
+  color: rgba(232, 241, 255, 0.65);
 }
 
 .empty {
-  margin-top: 40px;
+  margin-top: clamp(24px, 4vh, 40px);
   text-align: center;
 }
 
@@ -144,12 +148,12 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
+  gap: clamp(14px, 2vh, 22px);
 }
 
 .tip {
   opacity: 0.92;
-  font-size: 14px;
+  font-size: clamp(13px, 1.6vh, 18px);
   text-align: center;
   line-height: 1.5;
 }
@@ -158,24 +162,26 @@ h1 {
   display: inline-block;
   margin-top: 6px;
   opacity: 0.8;
-  font-size: 12px;
+  font-size: clamp(12px, 1.4vh, 16px);
 }
 
 .qr-box {
-  background: #fff;
-  padding: 14px;
-  border-radius: 16px;
+  background: rgba(10, 18, 32, 0.8);
+  padding: clamp(12px, 1.6vh, 20px);
+  border-radius: 18px;
+  border: 1px solid rgba(47, 255, 215, 0.4);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
 }
 
 .qr-img {
-  width: 320px;
-  height: 320px;
+  width: clamp(220px, 30vh, 360px);
+  height: clamp(220px, 30vh, 360px);
   display: block;
 }
 
 .loading {
-  color: #000;
-  font-size: 14px;
+  color: var(--text);
+  font-size: clamp(13px, 1.4vh, 16px);
 }
 
 .img-box {
@@ -187,13 +193,14 @@ h1 {
 .result-img {
   max-width: 100%;
   max-height: 55vh;
-  border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  border: 1px solid rgba(120, 200, 255, 0.28);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.4);
 }
 
 .actions {
   display: flex;
-  gap: 12px;
+  gap: clamp(10px, 1.6vh, 16px);
   margin-top: 6px;
   flex-wrap: wrap;
   justify-content: center;

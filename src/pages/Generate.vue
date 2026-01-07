@@ -1,36 +1,52 @@
 <template>
-  <div class="app-page">
-    <h1>艺术照片生成</h1>
+  <div class="app-page generate-page">
+    <header class="page-head">
+      <div class="eyebrow">Art Camera</div>
+      <h1 class="page-title">{{ titleText }}</h1>
+      <div class="page-subtitle">{{ subtitleText }}</div>
+    </header>
 
-    <!-- 状态提示 -->
-    <div v-if="status === 'idle'">
-      <button class="primary btn" @click="startGenerate">开始生成</button>
-    </div>
-
-    <div v-if="status === 'generating'">
-      <p>正在生成中，请稍候…</p>
-      <div class="loader"></div>
-    </div>
-
-    <div v-if="status === 'success'">
-      <p>生成完成</p>
-      <img :src="resultUrl" class="result-image" />
-      <div class="actions">
-          <button class="primary btn" @click="goSave">
-          去扫码保存
-        </button>
+    <section class="panel status-panel glow">
+      <div class="status-line">
+        <span class="status-dot" :class="status"></span>
+        <span class="status-text">{{ statusText }}</span>
       </div>
+      <div class="meta">
+        <div>当前风格：<b>{{ styleId || "未选择" }}</b></div>
+        <div v-if="status === 'generating'">系统自动生成中，请保持站位</div>
+      </div>
+      <div v-if="status === 'generating'" class="pulse-track">
+        <div class="pulse-bar"></div>
+      </div>
+    </section>
+
+    <section class="panel preview-panel">
+      <div v-if="status === 'success'" class="result-wrap">
+        <img :src="resultUrl" class="result-image" />
+      </div>
+      <div v-else class="result-placeholder">
+        <div class="orb"></div>
+        <div class="hint">
+          {{ status === "error" ? "生成失败，请重试" : "AI 影像处理中" }}
+        </div>
+      </div>
+    </section>
+
+    <div class="actions">
+      <button v-if="status === 'success'" class="btn primary" @click="goSave">
+        去扫码保存
+      </button>
+      <button v-if="status === 'error'" class="btn secondary" @click="reset">
+        重新生成
+      </button>
     </div>
 
-    <div v-if="status === 'error'">
-      <p class="error">{{ errorMsg }}</p>
-      <button @click="reset">重新生成</button>
-    </div>
+    <div v-if="status === 'error'" class="error">{{ errorMsg }}</div>
   </div>
 </template>
 
 <script setup>
-import { ref, onBeforeUnmount } from "vue";
+import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { useRouter } from "vue-router";
 import { AI_CONFIG } from "@/config/ai";
 
@@ -40,6 +56,7 @@ const status = ref("idle"); // idle | generating | success | error
 const errorMsg = ref("");
 const resultUrl = ref("");
 const taskId = ref("");
+const autoStarted = ref(false);
 let timer = null;
 
 // 👉 这里先假设：
@@ -47,6 +64,25 @@ let timer = null;
 // 你可以后面再精细化
 const imageBase64 = sessionStorage.getItem("imageBase64");
 const styleId = sessionStorage.getItem("styleId") || "anime";
+
+const titleText = computed(() => {
+  if (status.value === "success") return "生成完成";
+  if (status.value === "error") return "生成异常";
+  return "正在生成艺术照片";
+});
+
+const subtitleText = computed(() => {
+  if (status.value === "success") return "请扫码保存作品";
+  if (status.value === "error") return "可重新生成或返回拍照";
+  return "无需点击，系统已自动开始";
+});
+
+const statusText = computed(() => {
+  if (status.value === "generating") return "生成中 · AI 引擎计算中";
+  if (status.value === "success") return "任务完成 · 输出已就绪";
+  if (status.value === "error") return "任务失败 · 请重新生成";
+  return "准备中 · 自动启动";
+});
 
 async function startGenerate() {
   if (!imageBase64) {
@@ -128,7 +164,16 @@ function reset() {
   errorMsg.value = "";
   resultUrl.value = "";
   taskId.value = "";
+  autoStarted.value = true;
+  startGenerate();
 }
+
+onMounted(() => {
+  if (!autoStarted.value) {
+    autoStarted.value = true;
+    startGenerate();
+  }
+});
 
 onBeforeUnmount(() => {
   clearInterval(timer);
@@ -137,52 +182,144 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .generate-page {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
-  background: #0f0f0f;
-  color: #fff;
 }
 
-.primary {
-  padding: 14px 32px;
-  font-size: 20px;
-  border-radius: 8px;
-  border: none;
-  background: #ff8a00;
-  color: #000;
+.page-head {
+  text-align: center;
 }
 
-.loader {
-  margin-top: 20px;
-  width: 48px;
-  height: 48px;
-  border: 4px solid #333;
-  border-top-color: #ff8a00;
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 4px;
+  font-size: clamp(12px, 1.4vh, 16px);
+  color: rgba(232, 241, 255, 0.65);
+}
+
+.status-panel,
+.preview-panel {
+  width: min(900px, 90vw);
+}
+
+.status-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: clamp(14px, 1.6vh, 20px);
+}
+
+.status-dot {
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  background: rgba(232, 241, 255, 0.3);
+  box-shadow: 0 0 12px rgba(79, 140, 255, 0.5);
+}
+
+.status-dot.generating {
+  background: var(--accent);
+  animation: blink 1s ease-in-out infinite;
+}
+
+.status-dot.success {
+  background: #59f7a4;
+}
+
+.status-dot.error {
+  background: #ff6b6b;
+}
+
+.meta {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: clamp(12px, 1.4vh, 16px);
+  color: var(--muted);
+}
+
+.pulse-track {
+  margin-top: 12px;
+  height: 8px;
+  border-radius: 999px;
+  background: rgba(120, 200, 255, 0.12);
+  overflow: hidden;
+}
+
+.pulse-bar {
+  height: 100%;
+  width: 40%;
+  background: linear-gradient(90deg, transparent, rgba(47, 255, 215, 0.9), transparent);
+  animation: scan 1.8s ease-in-out infinite;
+}
+
+.preview-panel {
+  min-height: clamp(320px, 40vh, 620px);
+  display: grid;
+  place-items: center;
+}
+
+.result-wrap {
+  width: 100%;
+  display: grid;
+  place-items: center;
 }
 
 .result-image {
-  max-width: 70vw;
+  max-width: min(820px, 90vw);
   max-height: 60vh;
-  border-radius: 12px;
-  margin-top: 20px;
+  border-radius: 18px;
+  border: 1px solid rgba(120, 200, 255, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+}
+
+.result-placeholder {
+  display: grid;
+  place-items: center;
+  gap: 16px;
+  text-align: center;
+}
+
+.orb {
+  width: clamp(120px, 18vh, 200px);
+  height: clamp(120px, 18vh, 200px);
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(47, 255, 215, 0.9), rgba(79, 140, 255, 0.3));
+  box-shadow: 0 0 40px rgba(47, 255, 215, 0.35);
+  animation: breathe 2.4s ease-in-out infinite;
+}
+
+.hint {
+  color: var(--muted);
+  font-size: clamp(14px, 1.6vh, 18px);
 }
 
 .actions {
-  margin-top: 20px;
+  display: flex;
+  gap: 16px;
+  justify-content: center;
 }
 
 .error {
-  color: #ff4d4f;
+  margin-top: 8px;
+  color: #ff8f8f;
+  text-align: center;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
+@keyframes scan {
+  0% { transform: translateX(-30%); }
+  50% { transform: translateX(80%); }
+  100% { transform: translateX(-30%); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.05); opacity: 1; }
 }
 </style>

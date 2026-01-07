@@ -1,88 +1,165 @@
-/* 全局统一：让所有页面遵守同一个盒模型 */
+/* Global tokens and base layout for kiosk UI */
 * { box-sizing: border-box; }
 html, body, #app { height: 100%; margin: 0; }
 
-/* 统一背景与文字 */
+:root {
+  --site-max-width: 1120px;
+  --site-gap: clamp(14px, 2.2vh, 32px);
+  --radius-lg: 22px;
+  --radius-sm: 12px;
+
+  --bg-0: #06080f;
+  --bg-1: #0b1220;
+  --panel: rgba(10, 18, 32, 0.72);
+  --panel-2: rgba(14, 24, 40, 0.6);
+  --border: rgba(120, 200, 255, 0.18);
+  --border-strong: rgba(120, 200, 255, 0.36);
+
+  --text: #e8f1ff;
+  --muted: rgba(232, 241, 255, 0.72);
+  --accent: #2fffd7;
+  --accent-2: #4f8cff;
+  --accent-warm: #ffb347;
+
+  --btn-padding-vertical: clamp(10px, 1.2vh, 16px);
+  --btn-padding-horizontal: clamp(16px, 2.4vh, 26px);
+  --btn-font-size: clamp(15px, 1.8vh, 20px);
+  --btn-radius: 16px;
+}
+
 body {
-  background: #0f0f0f;
-  color: #fff;
-  font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+  background: radial-gradient(1200px 1200px at 20% 10%, #132038 0%, #0a0f1c 45%, #06080f 100%);
+  color: var(--text);
+  font-family: "Rajdhani", "Sora", "Noto Sans SC", "Segoe UI", system-ui, sans-serif;
+  letter-spacing: 0.2px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
-/* CSS variables for unified responsive sizing */
-:root {
-  --site-max-width: 900px;
-  --site-gap: 24px;
-  --radius-lg: 18px;
-  --radius-sm: 12px;
-  --btn-padding-vertical: 12px;
-  --btn-padding-horizontal: 18px;
-  --btn-font-size: 16px;
-  --btn-radius: 12px;
-  --ui-bg-1: rgba(255,255,255,0.06);
-  --ui-border: rgba(255,255,255,0.10);
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background:
+    linear-gradient(transparent 96%, rgba(120, 200, 255, 0.08) 100%),
+    linear-gradient(90deg, transparent 96%, rgba(120, 200, 255, 0.08) 100%);
+  background-size: 24px 24px, 24px 24px;
+  opacity: 0.35;
+  pointer-events: none;
+  z-index: 0;
 }
 
-/* 统一页面容器（所有页面都用这个类） */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(900px 900px at 80% 20%, rgba(79, 140, 255, 0.16), transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
 .app-page {
-  min-height: 100vh;               /* 统一高度 */
-  width: min(var(--site-max-width), 95vw);         /* 统一宽度 */
-  margin: 0 auto;                  /* 居中 */
-  padding: var(--site-gap);                   /* 统一内边距 */
+  min-height: 100vh;
+  width: min(var(--site-max-width), 94vw);
+  margin: 0 auto;
+  padding: var(--site-gap);
   display: flex;
   flex-direction: column;
+  gap: clamp(12px, 1.6vh, 24px);
+  position: relative;
+  z-index: 1;
 }
 
-/* 统一标题 */
 .page-title {
-  margin: 0 0 16px;
-  font-size: clamp(20px, 3.6vw, 28px);
-  font-weight: 900;
+  margin: 0;
+  font-size: clamp(22px, 2.6vh, 38px);
+  font-weight: 700;
+  letter-spacing: 0.8px;
   text-align: center;
 }
 
-/* Generic button tokens */
+.page-subtitle {
+  margin: 4px 0 0;
+  text-align: center;
+  font-size: clamp(14px, 1.6vh, 20px);
+  color: var(--muted);
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: clamp(12px, 1.8vh, 22px);
+  box-shadow: 0 20px 60px rgba(7, 12, 22, 0.45);
+  backdrop-filter: blur(10px);
+}
+
+.glow {
+  box-shadow: 0 0 20px rgba(47, 255, 215, 0.2), 0 0 40px rgba(79, 140, 255, 0.12);
+}
+
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   padding: var(--btn-padding-vertical) var(--btn-padding-horizontal);
   font-size: var(--btn-font-size);
   border-radius: var(--btn-radius);
-  border: none;
+  border: 1px solid transparent;
   cursor: pointer;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 1;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
 }
 
 .btn-primary {
-  background: #ffffff;
-  color: #0b0c10;
+  background: linear-gradient(135deg, rgba(47, 255, 215, 0.95), rgba(79, 140, 255, 0.95));
+  color: #071018;
+  box-shadow: 0 10px 30px rgba(47, 255, 215, 0.25);
 }
 
 .btn-secondary {
-  background: rgba(255,255,255,0.10);
-  color: #fff;
-  border: 1px solid var(--ui-border);
+  background: rgba(18, 32, 48, 0.85);
+  color: var(--text);
+  border-color: var(--border);
 }
 
 .btn-ghost {
-  background: rgba(255, 255, 255, 0.06);
-  color: #fff;
-  border: 1px solid rgba(255,255,255,0.12);
+  background: rgba(14, 24, 40, 0.4);
+  color: var(--text);
+  border: 1px solid rgba(120, 200, 255, 0.22);
 }
 
-/* Force key sizing even when components use scoped styles */
-.btn, .btn-primary, .btn-secondary, .btn-ghost {
-  padding: var(--btn-padding-vertical) var(--btn-padding-horizontal) !important;
-  font-size: var(--btn-font-size) !important;
-  border-radius: var(--btn-radius) !important;
+.btn:active {
+  transform: translateY(1px) scale(0.98);
 }
 
-/* Small utilities for responsive images */
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Map local classnames used across pages */
+.primary {
+  background: linear-gradient(135deg, rgba(47, 255, 215, 0.95), rgba(79, 140, 255, 0.95)) !important;
+  color: #071018 !important;
+  border: none !important;
+  font-weight: 800 !important;
+}
+.secondary {
+  background: rgba(18, 32, 48, 0.85) !important;
+  color: var(--text) !important;
+  border: 1px solid rgba(120, 200, 255, 0.22) !important;
+}
+.back, .lang, .chip {
+  border: 1px solid rgba(120, 200, 255, 0.22) !important;
+  background: rgba(10, 18, 32, 0.65) !important;
+  color: var(--text) !important;
+}
+
+/* Responsive images */
 .img-responsive, img, .img {
   max-width: 100%;
   height: auto;
@@ -90,66 +167,57 @@ body {
   object-fit: cover;
 }
 
-/* Map some common local classnames to the global tokens to ensure uniformity */
-.primary {
-  background: var(--btn-primary, #fff) !important;
-  background: #ffffff !important;
-  color: #0b0c10 !important;
-  padding: var(--btn-padding-vertical) var(--btn-padding-horizontal) !important;
-  font-size: var(--btn-font-size) !important;
-  border-radius: var(--btn-radius) !important;
-  font-weight: 800 !important;
-}
-.secondary {
-  background: rgba(255,255,255,0.10) !important;
-  color: #fff !important;
-  padding: var(--btn-padding-vertical) var(--btn-padding-horizontal) !important;
-  font-size: var(--btn-font-size) !important;
-  border-radius: var(--btn-radius) !important;
-  border: 1px solid var(--ui-border) !important;
-}
-.back, .lang, .chip {
-  padding: 8px 12px !important;
-  font-size: 14px !important;
-  border-radius: 12px !important;
-}
-
-/* preview small thumbnail */
 .preview {
   position: absolute;
   left: 16px;
   bottom: 16px;
-  width: clamp(96px, 12vw, 140px);
-  height: clamp(96px, 12vw, 140px);
+  width: clamp(110px, 12vw, 180px);
+  height: clamp(110px, 12vw, 180px);
   border-radius: var(--radius-sm);
   overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.6);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(47, 255, 215, 0.6);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.4);
   z-index: 3;
 }
+
 .previewImg { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-/* unified large CTA */
 .startBtn {
   width: min(820px, 92vw);
-  height: clamp(56px, 9vw, 86px);
+  height: clamp(64px, 8.5vh, 96px);
   border: none;
   border-radius: var(--radius-lg);
-  background: #ffffff;
-  color: #0b0c10;
-  font-size: clamp(18px, 4.2vw, 28px);
+  background: linear-gradient(120deg, rgba(47, 255, 215, 0.95), rgba(79, 140, 255, 0.95));
+  color: #041018;
+  font-size: clamp(18px, 3vh, 30px);
   font-weight: 800;
+  letter-spacing: 0.4px;
   cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  box-shadow: 0 18px 40px rgba(47, 255, 215, 0.28);
 }
 
-/* cards & thumbs */
-.card { position: relative; border-radius: var(--radius-lg); overflow: hidden; background: var(--ui-bg-1); border: 1px solid rgba(255,255,255,0.10); padding: 14px; box-sizing: border-box; }
-.thumb { width: 100%; aspect-ratio: 4 / 3; border-radius: var(--radius-sm); object-fit: cover; display: block; border: 1px solid rgba(255,255,255,0.10); }
+.card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--panel-2);
+  border: 1px solid rgba(120, 200, 255, 0.18);
+  padding: 14px;
+  box-sizing: border-box;
+}
 
-/* small responsive tweaks */
+.thumb {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  display: block;
+  border: 1px solid rgba(120, 200, 255, 0.18);
+}
+
 @media (max-width: 900px) {
-  :root { --site-gap: 16px; --btn-font-size: 15px; --btn-padding-vertical: 10px; --btn-padding-horizontal: 14px; }
+  :root {
+    --site-gap: clamp(12px, 2.2vh, 18px);
+    --btn-font-size: 14px;
+  }
 }

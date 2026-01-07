@@ -1,6 +1,6 @@
 <template>
   <!-- 整屏可点：符合“点击屏幕开始体验” -->
-  <div class="kiosk" @click="start">
+  <div class="kiosk app-page" @click="start">
     <!-- 主视觉区：效果图轮播 -->
     <section class="hero" @click.stop="start">
       <div class="tag">效果图</div>
@@ -103,20 +103,10 @@ onBeforeUnmount(() => {
 <style scoped>
 /* 大屏竖屏：尽量占满，字体/按钮远距离可读 */
 .kiosk {
-  /* 页面居中显示（开发态） */
-  max-width: 1100px;        /* Mac 上舒服的宽度 */
-  height: 100vh;
-  margin: 0 auto;
-
-  background: #0b0c10;
-  color: #fff;
-
+  min-height: 100vh;
   display: grid;
   grid-template-rows: 1fr auto auto;
-  gap: 18px;
-  padding: 20px;
-  box-sizing: border-box;
-
+  gap: clamp(14px, 2vh, 24px);
   user-select: none;
 }
 
@@ -125,8 +115,18 @@ onBeforeUnmount(() => {
   position: relative;
   border-radius: 22px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(12, 22, 36, 0.6);
+  border: 1px solid rgba(120, 200, 255, 0.18);
+  box-shadow: 0 20px 60px rgba(5, 10, 18, 0.5);
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(47, 255, 215, 0.08) 50%, transparent 100%);
+  animation: sweep 6s ease-in-out infinite;
+  pointer-events: none;
 }
 
 /* 顶部“效果图”标签 */
@@ -135,12 +135,13 @@ onBeforeUnmount(() => {
   top: 18px;
   left: 18px;
   z-index: 3;
-  padding: 8px 14px;
+  padding: 8px 16px;
   border-radius: 999px;
   font-weight: 700;
-  font-size: 18px;
-  background: rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(6px);
+  font-size: clamp(14px, 2vh, 20px);
+  background: rgba(10, 18, 32, 0.7);
+  border: 1px solid rgba(120, 200, 255, 0.3);
+  backdrop-filter: blur(8px);
 }
 
 /* 右上语言按钮 */
@@ -149,12 +150,12 @@ onBeforeUnmount(() => {
   top: 14px;
   right: 14px;
   z-index: 3;
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  background: rgba(0, 0, 0, 0.25);
-  color: #fff;
-  padding: 10px 14px;
+  border: 1px solid rgba(120, 200, 255, 0.3);
+  background: rgba(10, 18, 32, 0.6);
+  color: var(--text);
+  padding: 10px 16px;
   border-radius: 12px;
-  font-size: 16px;
+  font-size: clamp(14px, 1.8vh, 18px);
   cursor: pointer;
 }
 
@@ -167,7 +168,7 @@ onBeforeUnmount(() => {
 .track {
   height: 100%;
   display: flex;
-  transition: transform 400ms ease;
+  transition: transform 600ms ease;
 }
 
 .slide {
@@ -187,11 +188,11 @@ onBeforeUnmount(() => {
   position: absolute;
   left: 16px;
   bottom: 16px;
-  width: 140px;
-  height: 140px;
-  border-radius: 14px;
+  width: clamp(120px, 14vw, 180px);
+  height: clamp(120px, 14vw, 180px);
+  border-radius: 16px;
   overflow: hidden;
-  border: 2px solid rgba(255, 255, 255, 0.6);
+  border: 1px solid rgba(47, 255, 215, 0.7);
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
   z-index: 3;
 }
@@ -207,22 +208,24 @@ onBeforeUnmount(() => {
 }
 
 .startBtn {
-  width: min(820px, 92vw);
-  height: 86px;
+  width: min(860px, 92vw);
+  height: clamp(64px, 8vh, 96px);
   border: none;
-  border-radius: 18px;
-  background: #ffffff;
-  color: #0b0c10;
-  font-size: 28px;
+  border-radius: 22px;
+  background: linear-gradient(120deg, rgba(47, 255, 215, 0.95), rgba(79, 140, 255, 0.95));
+  color: #041018;
+  font-size: clamp(20px, 3vh, 32px);
   font-weight: 800;
+  letter-spacing: 0.6px;
   cursor: pointer;
+  box-shadow: 0 18px 40px rgba(47, 255, 215, 0.28);
 }
 
 /* 底部流程卡片 */
 .flow {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: clamp(10px, 1.6vh, 16px);
 }
 
 
@@ -231,15 +234,15 @@ onBeforeUnmount(() => {
   position: relative;
   border-radius: 18px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(12, 22, 36, 0.6);
+  border: 1px solid rgba(120, 200, 255, 0.18);
   padding: 14px;
   box-sizing: border-box;
 }
 
 .no {
-  font-weight: 900;
-  font-size: 18px;
+  font-weight: 800;
+  font-size: clamp(16px, 2vh, 22px);
   opacity: 0.9;
   margin-bottom: 10px;
 }
@@ -250,12 +253,12 @@ onBeforeUnmount(() => {
   border-radius: 14px;
   object-fit: cover;
   display: block;
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(120, 200, 255, 0.18);
 }
 
 .title {
   margin-top: 8px;
-  font-size: 14px;
+  font-size: clamp(13px, 1.6vh, 18px);
   font-weight: 700;
 }
 
@@ -271,5 +274,10 @@ onBeforeUnmount(() => {
   .flow {
     gap: 10px;
   }
+}
+
+@keyframes sweep {
+  0%, 100% { opacity: 0.1; transform: translateX(-10%); }
+  50% { opacity: 0.4; transform: translateX(10%); }
 }
 </style>

@@ -1,12 +1,12 @@
 <template>
-  <div class="app-page">
+  <div class="app-page camera-page">
     <header class="top">
       <button class="back" @click="goBack">← 返回</button>
       <div class="title">拍照</div>
       <div class="spacer"></div>
     </header>
 
-    <div class="hint">
+    <div class="hint panel">
       当前风格：<b>{{ styleId || "未选择" }}</b>
     </div>
 
@@ -42,7 +42,7 @@
       </div>
     </section>
 
-    <section class="controls">
+    <section class="controls panel">
       <div class="row">
         <div class="label">延时</div>
         <div class="chips">
@@ -251,35 +251,32 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.page {
-  min-height: 100vh;
-  background: #0b0c10;
-  color: #fff;
-  padding: 18px;
-  box-sizing: border-box;
+.camera-page {
+  color: var(--text);
 }
 
 .top {
   display: grid;
-  grid-template-columns: 90px 1fr 90px;
+  grid-template-columns: 120px 1fr 120px;
   align-items: center;
-  margin-bottom: 10px;
+  margin-bottom: clamp(10px, 1.4vh, 18px);
 }
 
 .back {
-  height: 44px;
+  height: clamp(40px, 4.6vh, 54px);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.06);
-  color: #fff;
-  font-size: 14px;
+  background: rgba(10, 18, 32, 0.65);
+  color: var(--text);
+  font-size: clamp(14px, 1.6vh, 18px);
   cursor: pointer;
 }
 
 .title {
   text-align: center;
-  font-size: 18px;
-  font-weight: 900;
+  font-size: clamp(18px, 2.2vh, 28px);
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 .spacer {
@@ -288,7 +285,7 @@ onBeforeUnmount(() => {
 
 .hint {
   margin: 6px 2px 12px;
-  font-size: 13px;
+  font-size: clamp(13px, 1.4vh, 16px);
   opacity: 0.9;
 }
 
@@ -297,9 +294,18 @@ onBeforeUnmount(() => {
   position: relative;
   border-radius: 18px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  background: rgba(12, 22, 36, 0.6);
+  border: 1px solid rgba(120, 200, 255, 0.22);
   aspect-ratio: 3 / 4;
+}
+
+.stage::after {
+  content: "";
+  position: absolute;
+  inset: 12px;
+  border-radius: 16px;
+  border: 1px dashed rgba(47, 255, 215, 0.25);
+  pointer-events: none;
 }
 
 /* 关键：video 和 preview 都绝对定位，确保叠层一致 */
@@ -328,10 +334,10 @@ onBeforeUnmount(() => {
   z-index: 3;
   display: grid;
   place-items: center;
-  font-size: 72px;
-  font-weight: 900;
-  background: rgba(0, 0, 0, 0.35);
-  backdrop-filter: blur(2px);
+  font-size: clamp(64px, 10vh, 120px);
+  font-weight: 800;
+  background: rgba(4, 8, 16, 0.45);
+  backdrop-filter: blur(6px);
 }
 
 /* 错误遮罩（最上层） */
@@ -343,45 +349,45 @@ onBeforeUnmount(() => {
   place-items: center;
   padding: 18px;
   text-align: center;
-  background: rgba(0, 0, 0, 0.55);
+  background: rgba(4, 8, 16, 0.65);
 }
 .errTitle {
-  font-size: 18px;
-  font-weight: 900;
+  font-size: clamp(18px, 2.2vh, 28px);
+  font-weight: 700;
 }
 .errDesc {
   margin-top: 8px;
-  font-size: 13px;
+  font-size: clamp(13px, 1.4vh, 16px);
   opacity: 0.85;
 }
 .btn {
   margin-top: 12px;
-  height: 44px;
-  padding: 0 18px;
-  border-radius: 12px;
+  height: clamp(44px, 5vh, 54px);
+  padding: 0 clamp(16px, 2vh, 22px);
+  border-radius: 14px;
   border: none;
-  background: #fff;
-  color: #0b0c10;
-  font-weight: 800;
+  background: linear-gradient(120deg, rgba(47, 255, 215, 0.95), rgba(79, 140, 255, 0.95));
+  color: #041018;
+  font-weight: 700;
   cursor: pointer;
 }
 
 .controls {
-  margin-top: 14px;
+  margin-top: clamp(12px, 1.6vh, 20px);
   display: grid;
   gap: 14px;
 }
 
 .row {
   display: grid;
-  grid-template-columns: 46px 1fr;
+  grid-template-columns: 60px 1fr;
   gap: 10px;
   align-items: center;
 }
 
 .label {
   opacity: 0.85;
-  font-size: 13px;
+  font-size: clamp(13px, 1.4vh, 16px);
 }
 
 .chips {
@@ -391,45 +397,45 @@ onBeforeUnmount(() => {
 }
 
 .chip {
-  height: 34px;
-  padding: 0 12px;
+  height: clamp(34px, 4.2vh, 46px);
+  padding: 0 clamp(12px, 1.8vh, 18px);
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.06);
-  color: #fff;
-  font-size: 13px;
+  background: rgba(10, 18, 32, 0.6);
+  color: var(--text);
+  font-size: clamp(13px, 1.4vh, 16px);
   cursor: pointer;
 }
 .chip.active {
-  background: #fff;
-  color: #0b0c10;
-  font-weight: 800;
+  background: linear-gradient(120deg, rgba(47, 255, 215, 0.95), rgba(79, 140, 255, 0.95));
+  color: #041018;
+  font-weight: 700;
 }
 
 .btnRow {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 12px;
+  gap: clamp(12px, 1.6vh, 18px);
 }
 
 .primary,
 .secondary {
-  height: 48px;
+  height: clamp(48px, 6vh, 62px);
   border-radius: 14px;
   border: none;
-  font-weight: 900;
+  font-weight: 700;
   cursor: pointer;
 }
 
 .primary {
-  background: #fff;
-  color: #0b0c10;
+  background: linear-gradient(120deg, rgba(47, 255, 215, 0.95), rgba(79, 140, 255, 0.95));
+  color: #041018;
 }
 
 .secondary {
-  background: rgba(255, 255, 255, 0.10);
-  color: #fff;
-  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(12, 22, 36, 0.7);
+  color: var(--text);
+  border: 1px solid rgba(120, 200, 255, 0.22);
 }
 
 .primary:disabled,

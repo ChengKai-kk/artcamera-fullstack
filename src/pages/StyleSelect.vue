@@ -1,5 +1,5 @@
 <template>
-  <div class="page">
+  <div class="app-page style-page">
     <header class="top">
       <button class="back" @click="goHome">← 返回</button>
       <div class="title">{{ pageTitle }}</div>
@@ -21,7 +21,7 @@
     <!-- 成功 -->
     <div v-else>
       <!-- 筛选区 -->
-      <section class="filters">
+      <section class="filters panel">
         <div class="filterRow">
           <div class="label">人群</div>
           <div class="chips">
@@ -184,35 +184,32 @@ onMounted(load);
 </script>
 
 <style scoped>
-.page {
-  min-height: 100vh;
-  background: #0b0c10;
-  color: #fff;
-  padding: 18px;
-  box-sizing: border-box;
+.style-page {
+  color: var(--text);
 }
 
 .top {
   display: grid;
-  grid-template-columns: 90px 1fr 90px;
+  grid-template-columns: 120px 1fr 120px;
   align-items: center;
-  margin-bottom: 12px;
+  margin-bottom: clamp(10px, 1.4vh, 18px);
 }
 
 .back {
-  height: 44px;
+  height: clamp(40px, 4.6vh, 54px);
   border-radius: 12px;
   border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.06);
-  color: #fff;
-  font-size: 14px;
+  background: rgba(10, 18, 32, 0.65);
+  color: var(--text);
+  font-size: clamp(14px, 1.6vh, 18px);
   cursor: pointer;
 }
 
 .title {
   text-align: center;
-  font-size: 18px;
-  font-weight: 900;
+  font-size: clamp(18px, 2.2vh, 28px);
+  font-weight: 700;
+  letter-spacing: 1px;
 }
 
 .spacer {
@@ -222,24 +219,21 @@ onMounted(load);
 /* 筛选区 */
 .filters {
   display: grid;
-  gap: 10px;
-  padding: 12px;
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  margin-bottom: 10px;
+  gap: 12px;
+  padding: clamp(12px, 1.6vh, 20px);
+  margin-bottom: clamp(8px, 1.2vh, 16px);
 }
 
 .filterRow {
   display: grid;
-  grid-template-columns: 46px 1fr;
+  grid-template-columns: 60px 1fr;
   gap: 10px;
   align-items: start;
 }
 
 .label {
   opacity: 0.85;
-  font-size: 13px;
+  font-size: clamp(13px, 1.4vh, 16px);
   padding-top: 6px;
 }
 
@@ -250,21 +244,21 @@ onMounted(load);
 }
 
 .chip {
-  height: 34px;
-  padding: 0 12px;
+  height: clamp(34px, 4.2vh, 46px);
+  padding: 0 clamp(12px, 1.8vh, 18px);
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.16);
-  background: rgba(255, 255, 255, 0.06);
-  color: #fff;
-  font-size: 13px;
+  background: rgba(10, 18, 32, 0.6);
+  color: var(--text);
+  font-size: clamp(13px, 1.4vh, 16px);
   cursor: pointer;
 }
 
 .chip.active {
-  background: #fff;
-  color: #0b0c10;
-  border-color: rgba(255, 255, 255, 0.4);
-  font-weight: 800;
+  background: linear-gradient(120deg, rgba(47, 255, 215, 0.9), rgba(79, 140, 255, 0.9));
+  color: #041018;
+  border-color: rgba(47, 255, 215, 0.6);
+  font-weight: 700;
 }
 
 /* 结果提示 */
@@ -272,29 +266,29 @@ onMounted(load);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 8px 2px 12px;
-  font-size: 13px;
+  margin: clamp(8px, 1.2vh, 14px) 2px clamp(10px, 1.6vh, 18px);
+  font-size: clamp(13px, 1.4vh, 16px);
   opacity: 0.9;
 }
 .clear {
   border: none;
   background: transparent;
-  color: rgba(255, 255, 255, 0.9);
+  color: var(--muted);
   text-decoration: underline;
   cursor: pointer;
-  font-size: 13px;
+  font-size: clamp(12px, 1.4vh, 16px);
 }
 
 /* 网格卡片 */
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: clamp(12px, 1.8vh, 18px);
 }
 
 @media (max-width: 900px) {
   .grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   }
 }
 
@@ -305,9 +299,10 @@ onMounted(load);
   cursor: pointer;
   border-radius: 18px;
   overflow: hidden;
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(12, 22, 36, 0.6);
   aspect-ratio: 3 / 4;
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(120, 200, 255, 0.18);
+  box-shadow: 0 12px 30px rgba(5, 10, 18, 0.45);
 }
 
 .cover {
@@ -322,8 +317,8 @@ onMounted(load);
   inset: 0;
   background: linear-gradient(
     to bottom,
-    rgba(0, 0, 0, 0.05),
-    rgba(0, 0, 0, 0.60)
+    rgba(6, 10, 18, 0.05),
+    rgba(4, 8, 16, 0.68)
   );
 }
 
@@ -335,13 +330,13 @@ onMounted(load);
 }
 
 .name {
-  font-size: 16px;
-  font-weight: 900;
+  font-size: clamp(15px, 1.8vh, 20px);
+  font-weight: 700;
 }
 
 .desc {
   margin-top: 6px;
-  font-size: 13px;
+  font-size: clamp(12px, 1.4vh, 16px);
   opacity: 0.85;
 }
 
@@ -353,16 +348,16 @@ onMounted(load);
 }
 
 .badge {
-  font-size: 12px;
-  padding: 4px 8px;
+  font-size: clamp(11px, 1.2vh, 14px);
+  padding: 4px 10px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.14);
-  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(47, 255, 215, 0.16);
+  border: 1px solid rgba(47, 255, 215, 0.2);
 }
 
 /* Skeleton */
 .skeleton {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(12, 22, 36, 0.6);
   position: relative;
 }
 .skeleton::after {
@@ -372,9 +367,9 @@ onMounted(load);
   transform: translateX(-100%);
   background: linear-gradient(
     90deg,
-    rgba(255, 255, 255, 0.05),
-    rgba(255, 255, 255, 0.12),
-    rgba(255, 255, 255, 0.05)
+    rgba(120, 200, 255, 0.05),
+    rgba(120, 200, 255, 0.16),
+    rgba(120, 200, 255, 0.05)
   );
   animation: shimmer 1.2s infinite;
 }
@@ -388,7 +383,7 @@ onMounted(load);
   margin-top: 16px;
   text-align: center;
   opacity: 0.8;
-  font-size: 13px;
+  font-size: clamp(13px, 1.4vh, 16px);
 }
 
 /* 错误态 */
@@ -400,22 +395,22 @@ onMounted(load);
   text-align: center;
 }
 .errTitle {
-  font-size: 18px;
-  font-weight: 900;
+  font-size: clamp(18px, 2.2vh, 28px);
+  font-weight: 700;
 }
 .errDesc {
   opacity: 0.8;
-  font-size: 13px;
+  font-size: clamp(13px, 1.4vh, 16px);
   max-width: 520px;
 }
 .btn {
-  height: 44px;
-  padding: 0 18px;
-  border-radius: 12px;
+  height: clamp(44px, 5vh, 54px);
+  padding: 0 clamp(16px, 2vh, 22px);
+  border-radius: 14px;
   border: none;
-  background: #fff;
-  color: #0b0c10;
-  font-weight: 800;
+  background: linear-gradient(120deg, rgba(47, 255, 215, 0.95), rgba(79, 140, 255, 0.95));
+  color: #041018;
+  font-weight: 700;
   cursor: pointer;
 }
 </style>
