@@ -207,5 +207,34 @@ onBeforeUnmount(() => {
   justify-content: center;
 }
 
-/* Use global .btn / .btn-ghost tokens from src/style.css */
+/* Use global .btn / .btn-ghost tokens from src/styles/global.css */
+
+@media (max-width: 720px) {
+  .content {
+    width: min(540px, 94vw);
+  }
+  .qr-img {
+    width: clamp(180px, 28vh, 280px);
+    height: clamp(180px, 28vh, 280px);
+  }
+  .result-img {
+    max-height: 48vh;
+  }
+}
+
+@media (orientation: portrait) and (min-height: 2400px) {
+  .content {
+    width: min(1200px, 92vw);
+  }
+  .qr-img {
+    width: clamp(320px, 32vh, 460px);
+    height: clamp(320px, 32vh, 460px);
+  }
+  .result-img {
+    max-height: 62vh;
+  }
+  .tip {
+    font-size: clamp(16px, 1.8vh, 22px);
+  }
+}
 </style>

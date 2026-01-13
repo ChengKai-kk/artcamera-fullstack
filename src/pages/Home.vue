@@ -118,6 +118,7 @@ onBeforeUnmount(() => {
   background: rgba(12, 22, 36, 0.6);
   border: 1px solid rgba(120, 200, 255, 0.18);
   box-shadow: 0 20px 60px rgba(5, 10, 18, 0.5);
+  min-height: clamp(360px, 46vh, 820px);
 }
 
 .hero::after {
@@ -273,6 +274,39 @@ onBeforeUnmount(() => {
   }
   .flow {
     gap: 10px;
+  }
+}
+
+@media (max-width: 720px) {
+  .kiosk {
+    grid-template-rows: minmax(320px, 1fr) auto auto;
+  }
+  .flow {
+    grid-template-columns: 1fr;
+  }
+  .preview {
+    width: 96px;
+    height: 96px;
+  }
+}
+
+@media (orientation: portrait) and (min-height: 2400px) {
+  .kiosk {
+    gap: clamp(22px, 2.6vh, 36px);
+  }
+  .hero {
+    min-height: clamp(520px, 58vh, 1200px);
+  }
+  .preview {
+    width: clamp(160px, 16vw, 220px);
+    height: clamp(160px, 16vw, 220px);
+    border-radius: 18px;
+  }
+  .flow {
+    gap: clamp(16px, 2vh, 26px);
+  }
+  .card {
+    border-radius: 22px;
   }
 }
 

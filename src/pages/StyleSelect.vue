@@ -282,13 +282,44 @@ onMounted(load);
 /* 网格卡片 */
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: clamp(12px, 1.8vh, 18px);
 }
 
 @media (max-width: 900px) {
   .grid {
     grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+  .filterRow {
+    grid-template-columns: 1fr;
+  }
+  .label {
+    padding-top: 0;
+  }
+}
+
+@media (orientation: portrait) and (min-height: 2400px) {
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: clamp(16px, 2.2vh, 26px);
+  }
+  .card {
+    border-radius: 22px;
+  }
+  .name {
+    font-size: clamp(18px, 2.2vh, 24px);
+  }
+  .desc {
+    font-size: clamp(14px, 1.6vh, 18px);
+  }
+  .badge {
+    font-size: clamp(12px, 1.4vh, 16px);
   }
 }
 

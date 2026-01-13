@@ -7,6 +7,7 @@ html, body, #app { height: 100%; margin: 0; }
   --site-gap: clamp(14px, 2.2vh, 32px);
   --radius-lg: 22px;
   --radius-sm: 12px;
+  --touch-size: 52px;
 
   --bg-0: #06080f;
   --bg-1: #0b1220;
@@ -37,6 +38,18 @@ body {
   overflow-x: hidden;
 }
 
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+button {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
 body::before {
   content: "";
   position: fixed;
@@ -61,7 +74,7 @@ body::after {
 
 .app-page {
   min-height: 100vh;
-  width: min(var(--site-max-width), 94vw);
+  width: min(var(--site-max-width), 92vw);
   margin: 0 auto;
   padding: var(--site-gap);
   display: flex;
@@ -69,6 +82,7 @@ body::after {
   gap: clamp(12px, 1.6vh, 24px);
   position: relative;
   z-index: 1;
+  animation: pageIn 520ms ease both;
 }
 
 .page-title {
@@ -93,6 +107,7 @@ body::after {
   padding: clamp(12px, 1.8vh, 22px);
   box-shadow: 0 20px 60px rgba(7, 12, 22, 0.45);
   backdrop-filter: blur(10px);
+  animation: panelIn 600ms ease both;
 }
 
 .glow {
@@ -112,6 +127,7 @@ body::after {
   font-weight: 700;
   line-height: 1;
   transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+  min-height: var(--touch-size);
 }
 
 .btn-primary {
@@ -219,5 +235,44 @@ body::after {
   :root {
     --site-gap: clamp(12px, 2.2vh, 18px);
     --btn-font-size: 14px;
+    --touch-size: 44px;
   }
+}
+
+@media (max-width: 720px) {
+  :root {
+    --site-max-width: 960px;
+    --site-gap: clamp(10px, 1.8vh, 16px);
+    --btn-font-size: 13px;
+  }
+}
+
+@media (orientation: portrait) and (min-height: 2400px) {
+  :root {
+    --site-max-width: 1680px;
+    --site-gap: clamp(20px, 2.6vh, 46px);
+    --btn-padding-vertical: clamp(14px, 1.6vh, 20px);
+    --btn-padding-horizontal: clamp(22px, 3vh, 36px);
+    --btn-font-size: clamp(20px, 2.2vh, 28px);
+    --radius-lg: 28px;
+    --radius-sm: 16px;
+    --touch-size: 64px;
+  }
+}
+
+@media (orientation: landscape) and (min-width: 1400px) {
+  :root {
+    --site-max-width: 1280px;
+    --site-gap: clamp(16px, 1.8vh, 28px);
+  }
+}
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
 }

@@ -297,6 +297,7 @@ onBeforeUnmount(() => {
   background: rgba(12, 22, 36, 0.6);
   border: 1px solid rgba(120, 200, 255, 0.22);
   aspect-ratio: 3 / 4;
+  min-height: clamp(360px, 52vh, 920px);
 }
 
 .stage::after {
@@ -447,5 +448,30 @@ onBeforeUnmount(() => {
 
 .hidden {
   display: none;
+}
+
+@media (max-width: 720px) {
+  .top {
+    grid-template-columns: 90px 1fr 90px;
+  }
+  .btnRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (orientation: portrait) and (min-height: 2400px) {
+  .stage {
+    min-height: clamp(520px, 60vh, 1280px);
+    border-radius: 24px;
+  }
+  .countdown {
+    font-size: clamp(96px, 12vh, 160px);
+  }
+  .controls {
+    gap: 18px;
+  }
+  .chip {
+    height: clamp(44px, 4.6vh, 64px);
+  }
 }
 </style>
