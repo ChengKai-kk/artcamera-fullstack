@@ -105,9 +105,12 @@ onBeforeUnmount(() => {
 .kiosk {
   min-height: 100vh;
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   grid-template-rows: 1fr auto auto;
   gap: clamp(14px, 2vh, 24px);
   user-select: none;
+  width: min(var(--site-max-width), 92vw);
+  margin: 0 auto;
 }
 
 
@@ -119,6 +122,7 @@ onBeforeUnmount(() => {
   border: 1px solid rgba(120, 200, 255, 0.18);
   box-shadow: 0 20px 60px rgba(5, 10, 18, 0.5);
   min-height: clamp(360px, 46vh, 820px);
+  width: 100%;
 }
 
 .hero::after {
@@ -206,6 +210,7 @@ onBeforeUnmount(() => {
 .startWrap {
   display: flex;
   justify-content: center;
+  width: 100%;
 }
 
 .startBtn {
@@ -227,6 +232,7 @@ onBeforeUnmount(() => {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: clamp(10px, 1.6vh, 16px);
+  width: 100%;
 }
 
 
@@ -282,7 +288,7 @@ onBeforeUnmount(() => {
     grid-template-rows: minmax(320px, 1fr) auto auto;
   }
   .flow {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
   .preview {
     width: 96px;
@@ -295,7 +301,7 @@ onBeforeUnmount(() => {
     gap: clamp(22px, 2.6vh, 36px);
   }
   .hero {
-    min-height: clamp(520px, 58vh, 1200px);
+    min-height: clamp(620px, 64vh, 1400px);
   }
   .preview {
     width: clamp(160px, 16vw, 220px);
@@ -303,10 +309,24 @@ onBeforeUnmount(() => {
     border-radius: 18px;
   }
   .flow {
-    gap: clamp(16px, 2vh, 26px);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(10px, 1.4vh, 18px);
   }
   .card {
     border-radius: 22px;
+    padding: 12px;
+  }
+  .thumb {
+    aspect-ratio: 16 / 9;
+    border-radius: 12px;
+  }
+  .no {
+    font-size: clamp(14px, 1.6vh, 18px);
+    margin-bottom: 6px;
+  }
+  .title {
+    font-size: clamp(12px, 1.4vh, 16px);
+    margin-top: 6px;
   }
 }
 

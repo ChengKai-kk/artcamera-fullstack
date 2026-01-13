@@ -306,20 +306,20 @@ onMounted(load);
 
 @media (orientation: portrait) and (min-height: 2400px) {
   .grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: clamp(16px, 2.2vh, 26px);
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: clamp(12px, 1.6vh, 20px);
   }
   .card {
     border-radius: 22px;
   }
   .name {
-    font-size: clamp(18px, 2.2vh, 24px);
+    font-size: clamp(16px, 2vh, 22px);
   }
   .desc {
-    font-size: clamp(14px, 1.6vh, 18px);
+    font-size: clamp(13px, 1.4vh, 16px);
   }
   .badge {
-    font-size: clamp(12px, 1.4vh, 16px);
+    font-size: clamp(11px, 1.3vh, 14px);
   }
 }
 
